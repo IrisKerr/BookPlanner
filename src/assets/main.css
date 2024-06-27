@@ -1,0 +1,81 @@
+/* custom fonts */
+@import url("https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap");
+
+/* variables */
+:root {
+  --primary: hsl(229, 7%, 33%);
+  --secondary: hsl(0, 0%, 92%);
+  --warning: hsl(345, 87%, 46%);
+}
+
+/* base styles  */
+* {
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+  color: var(--primary);
+  box-sizing: border-box;
+}
+body {
+  background: hsl(0, 0%, 90%);
+}
+a {
+  text-decoration: none;
+}
+
+/* buttons */
+button,
+.btn {
+  background: var(--secondary);
+  border-radius: 0.5rem;
+  border: 0;
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-end;
+  margin: 1rem 0 0;
+  outline: none;
+  display: inline-block;
+}
+
+button:hover,
+.btn:hover {
+  color: white;
+  background: var(--primary);
+}
+button:disabled {
+  opacity: 0.5;
+  color: var(--primary);
+  background: var(--secondary);
+  cursor: not-allowed;
+}
+
+/* forms */
+form {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 1px 2px 3px hsla(0, 0%, 15%, 0.1);
+  border: 1px solid var(--secondary);
+  background: white;
+}
+input,
+textarea {
+  border: 0;
+  border-bottom: 1px solid var(--secondary);
+  border-radius: 0.5rem;
+  padding: 10px;
+  outline: none;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 1rem auto 0;
+}
+
+/* error text */
+.error {
+  color: var(--warning);
+  font-size: 14px;
+  margin: 16px 0;
+}
