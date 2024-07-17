@@ -3,7 +3,7 @@
     <h3>Login</h3>
     <input type="email" placeholder="Email" v-model="email" />
     <input type="password" placeholder="Password" v-model="password" />
-    <button>Log in</button>
+    <button v-if="!isPending">Log in</button>
     <div v-if="error" class="error">{{ error }}</div>
   </form>
 </template>
@@ -15,7 +15,7 @@ import useLogin from '@/composables/useLogin'
 export default {
   name: 'LoginView',
   setup() {
-    const { error, login } = useLogin()
+    const { error, login, isPending } = useLogin()
     const email = ref('')
     const password = ref('')
     const handleSubmit = async () => {
@@ -24,7 +24,7 @@ export default {
         console.log('user logged in')
       }
     }
-    return { email, password, handleSubmit, error }
+    return { email, password, handleSubmit, error, isPending }
   },
 }
 </script>
