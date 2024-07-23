@@ -4,13 +4,15 @@
     <input type="text" placeholder="Display name" v-model="displayName" />
     <input type="email" placeholder="Email" v-model="email" />
     <input type="password" placeholder="Password" v-model="password" />
-    <button v-if="!isPending">Sign up</button>
     <div v-if="error" class="error">{{ error }}</div>
+    <button v-if="!isPending">Sign up</button>
+    <button v-if="isPending" disabled>Loading</button>
   </form>
 </template>
 
 <script>
 import useSignup from '@/composables/useSignup'
+import { ref } from 'vue'
 
 export default {
   setup() {
@@ -18,7 +20,19 @@ export default {
     const email = ref('')
     const password = ref('')
     const displayName = ref('')
-    return { email, password, displayName }
+
+    const handleSubmit = async () => {
+      const res = await signup(email.value, password.value, displayName.value)
+      if (!error.value) {
+        console.log('user signed up')
+        email.value = ''
+        password.value = ''
+        displayName.value = ''
+      } else {
+        console.error('Signup error:', error.value)
+      }
+    }
+    return { email, password, displayName, handleSubmit, isPending, error }
   },
 }
 </script>
