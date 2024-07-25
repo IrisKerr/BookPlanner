@@ -18,3 +18,32 @@ export default {
   name: 'Navbar',
 }
 </script>
+
+<style scoped>
+.navbar {
+  padding: 16px 10px;
+  margin-bottom: 60px;
+  background: white;
+}
+
+nav {
+  display: flex;
+  align-content: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+nav h1 {
+  margin-left: 20px;
+}
+
+nav .links {
+  margin-left: auto;
+}
+
+nav .links a,
+button {
+  margin-left: 16px;
+  font-size: 14px;
+}
+</style>
