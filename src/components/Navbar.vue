@@ -1,6 +1,7 @@
 <template>
   <div class="navbar">
     <nav>
+      <img src="@/assets/books.svg" alt="logo" />
       <h1>
         <router-link :to="{ name: 'Home' }"> Book planner </router-link>
       </h1>
@@ -45,5 +46,9 @@ nav .links a,
 button {
   margin-left: 16px;
   font-size: 14px;
+}
+
+nav img {
+  max-height: 60px;
 }
 </style>
