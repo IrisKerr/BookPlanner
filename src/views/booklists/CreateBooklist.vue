@@ -29,10 +29,25 @@ export default {
       title,
       description,
       handleSubmit,
-      error,
     }
   },
 }
 </script>
 
-<style></style>
+<style>
+form {
+  background: white;
+}
+input[type='file'] {
+  padding: 5px;
+}
+label {
+  font-size: 18px;
+  display: block;
+  margin-top: 30px;
+  padding-left: 5px;
+}
+button {
+  margin-top: 20px;
+}
+</style>
