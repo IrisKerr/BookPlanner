@@ -9,7 +9,7 @@
     ></textarea>
     <!-- Upload booklist image -->
     <label>Upload Booklist cover image</label>
-    <input type="file" />
+    <input type="file" @change="handleChange" />
     <button>Create</button>
     <div class="error"></div>
   </form>
@@ -21,14 +21,26 @@ export default {
   setup() {
     const title = ref('')
     const description = ref('')
+    const file = ref(null)
+
+    // allow file types
+    const types = ['image/png', 'image/jpeg']
 
     const handleSubmit = () => {
       console.log(title.value, description.value)
+    }
+
+    const handleChange = (e) => {
+      const selectedFile = e.target.files[0]
+      selectedFile && types.includes(selectedFile.type)
+        ? (file.value = selectedFile)
+        : (file.value = null)
     }
     return {
       title,
       description,
       handleSubmit,
+      handleChange,
     }
   },
 }
