@@ -10,8 +10,8 @@
     <!-- Upload booklist image -->
     <label>Upload Booklist cover image</label>
     <input type="file" @change="handleChange" />
+    <div class="error">{{ fileError }}</div>
     <button>Create</button>
-    <div class="error"></div>
   </form>
 </template>
 
@@ -22,25 +22,30 @@ export default {
     const title = ref('')
     const description = ref('')
     const file = ref(null)
+    const fileError = ref(null)
 
     // allow file types
     const types = ['image/png', 'image/jpeg']
 
     const handleSubmit = () => {
-      console.log(title.value, description.value)
+      if (file.value) {
+        console.log(title.value, description.value, file.value)
+      }
     }
 
     const handleChange = (e) => {
       const selectedFile = e.target.files[0]
       selectedFile && types.includes(selectedFile.type)
-        ? (file.value = selectedFile)
-        : (file.value = null)
+        ? ((file.value = selectedFile), (fileError.value = null))
+        : ((file.value = null),
+          (fileError.value = 'Please select an image file'))
     }
     return {
       title,
       description,
       handleSubmit,
       handleChange,
+      fileError,
     }
   },
 }
