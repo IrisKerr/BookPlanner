@@ -1,38 +1,32 @@
-import { projectStorage } from '@/firebase/config'
-import { ref } from 'firebase/storage'
+import { ref as vueRef } from 'vue'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage' 
+import { projectStorage } from '@/firebase/config' 
 import getUser from './getUser'
 
-const { user } = getUser() 
-
 const useStorage = () => {
+  const error = vueRef(null)
+  const url = vueRef(null)
+  const filePath = vueRef(null)
 
-  const error = ref(null)
-  const url = ref(null)
-  const filePath = ref(null)
+  const { user } = getUser() 
 
   const uploadImage = async (file) => {
-  
-    if (!user || !user.value) {
-      error.value = "user is not connected"
-      console.log(error.value)
-      return
-    }
-
-
-    filePath.value = `covers/${user.value.uid}/${file.name}`
-    const storageRef = projectStorage.ref(filePath.value)
-
     try {
-      const res = await storageRef.put(file)
-      url.value = await res.ref.getDownloadURL()
-      console.log('storage updated')
-    } catch (error) {
-      error.value = error.message
-      console.log(error.value)
+      if (!user.value) {
+        throw new Error("User is not connected")
+      }
+      filePath.value = `covers/${user.value.uid}/${file.name}` 
+      const storageReference = ref(projectStorage, filePath.value) 
+      await uploadBytes(storageReference, file)
+      url.value = await getDownloadURL(storageReference)
+      console.log('File uploaded, URL:', url.value)
+    } catch (err) {
+      error.value = err.message
+      console.log('Error while uploading:', error.value)
     }
   }
 
-  return { error, filePath, url, uploadImage }
+  return { error, url, uploadImage }
 }
 
 export default useStorage
