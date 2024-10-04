@@ -11,17 +11,24 @@
     <label>Upload Booklist cover image</label>
     <input type="file" @change="handleChange" />
     <div class="error">{{ fileError }}</div>
-    <button>Create</button>
+    <button v-if="!isPending">Create</button>
+    <button v-if="isPending" disabled>Saving...</button>
   </form>
 </template>
 
 <script>
 import { ref } from 'vue'
 import useStorage from '@/composables/useStorage'
+import useCollection from '@/composables/useCollection'
+import getUser from '@/composables/getUser'
+import { serverTimestamp } from 'firebase/firestore'
 
 export default {
   setup() {
     const { filePath, url, uploadImage } = useStorage()
+    const { error, addDocument } = useCollection('booklists')
+    const { user } = getUser()
+
     const title = ref('')
     const description = ref('')
     const file = ref(null)
@@ -33,7 +40,19 @@ export default {
     const handleSubmit = async () => {
       if (file.value) {
         await uploadImage(file.value)
-        console.log('image uploaded, url: ', url.value)
+        await addDocument({
+          title: title.value,
+          description: description.value,
+          userId: user.value.uid,
+          userName: user.value.displayName,
+          coverUrl: url.value,
+          filePath: filePath,
+          books: [],
+          createdAt: serverTimestamp()
+        })
+        if (!error.value) {
+          console.log("booklist added")
+        }
       }
     }
 
