@@ -33,14 +33,16 @@ export default {
     const description = ref('')
     const file = ref(null)
     const fileError = ref(null)
+    const isPending = ref(false)
 
     // allow file types
     const types = ['image/png', 'image/jpeg']
 
     const handleSubmit = async () => {
       if (file.value) {
+        isPending.value = true
         await uploadImage(file.value)
-        await addDocument({
+        const bookListData = {
           title: title.value,
           description: description.value,
           userId: user.value.uid,
@@ -48,10 +50,18 @@ export default {
           coverUrl: url.value,
           filePath: filePath,
           books: [],
-          createdAt: serverTimestamp()
-        })
+          createdAt: serverTimestamp(),
+        }
+        if (filePath.value) {
+          bookListData.filePath = filePath.value
+        } else {
+          console.log('filePath is undefined after image upload!')
+          return
+        }
+        await addDocument(bookListData)
+        isPending.value = false
         if (!error.value) {
-          console.log("booklist added")
+          console.log('booklist added')
         }
       }
     }
@@ -69,6 +79,7 @@ export default {
       handleSubmit,
       handleChange,
       fileError,
+      isPending,
     }
   },
 }

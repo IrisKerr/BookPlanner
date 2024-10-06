@@ -12,12 +12,12 @@ const useCollection = (collectionName) => {
     isPending.value = true
 
     try {
-      const colRef = collection(projectFirestore, collectionName) 
+      const colRef = collection(projectFirestore, collectionName)
       await addDoc(colRef, doc)
       isPending.value = false
     } catch (err) {
       console.log(err.message)
-      error.value = 'could not send the message'
+      error.value = err.message
       isPending.value = false
     }
   }

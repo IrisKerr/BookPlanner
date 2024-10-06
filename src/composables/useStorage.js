@@ -15,7 +15,7 @@ const useStorage = () => {
       if (!user.value) {
         throw new Error('User is not connected')
       }
-      filePath.value = `covers/${user.value.uid}/${file.name}`
+      filePath.value = `booklists/${user.value.uid}/${file.name}`
       const storageReference = ref(projectStorage, filePath.value)
       await uploadBytes(storageReference, file)
       url.value = await getDownloadURL(storageReference)
@@ -26,7 +26,7 @@ const useStorage = () => {
     }
   }
 
-  return { error, url, uploadImage }
+  return { error, url, uploadImage, filePath }
 }
 
 export default useStorage
