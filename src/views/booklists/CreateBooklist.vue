@@ -11,7 +11,7 @@
     <label>Upload Booklist cover image</label>
     <input type="file" @change="handleChange" />
     <div class="error">{{ fileError }}</div>
-    <button v-if="!isPending">Create</button>
+    <button type="submit" v-if="!isPending">Create</button>
     <button v-if="isPending" disabled>Saving...</button>
   </form>
 </template>
@@ -42,16 +42,23 @@ export default {
       if (file.value) {
         isPending.value = true
         await uploadImage(file.value)
+        console.log(
+          'Image uploaded ! URL:',
+          url.value,
+          'FilePath:',
+          filePath.value
+        )
         const bookListData = {
           title: title.value,
           description: description.value,
           userId: user.value.uid,
           userName: user.value.displayName,
           coverUrl: url.value,
-          filePath: filePath,
+          filePath: filePath.value,
           books: [],
           createdAt: serverTimestamp(),
         }
+        console.log(bookListData)
         if (filePath.value) {
           bookListData.filePath = filePath.value
         } else {
@@ -62,6 +69,8 @@ export default {
         isPending.value = false
         if (!error.value) {
           console.log('booklist added')
+        } else {
+          console.log('Firebase error:', error.value)
         }
       }
     }
@@ -76,6 +85,8 @@ export default {
     return {
       title,
       description,
+      file,
+      url,
       handleSubmit,
       handleChange,
       fileError,
