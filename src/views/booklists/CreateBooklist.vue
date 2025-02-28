@@ -22,12 +22,14 @@ import useStorage from '@/composables/useStorage'
 import useCollection from '@/composables/useCollection'
 import getUser from '@/composables/getUser'
 import { serverTimestamp } from 'firebase/firestore'
+import { useRouter } from 'vue-router'
 
 export default {
   setup() {
     const { filePath, url, uploadImage } = useStorage()
     const { error, addDocument } = useCollection('booklists')
     const { user } = getUser()
+    const router = useRouter()
 
     const title = ref('')
     const description = ref('')
@@ -65,10 +67,11 @@ export default {
           console.log('filePath is undefined after image upload!')
           return
         }
-        await addDocument(bookListData)
+        const res = await addDocument(bookListData)
         isPending.value = false
         if (!error.value) {
           console.log('booklist added')
+          router.push({ name: 'BooklistDetails', params: { id: res.id } })
         } else {
           console.log('Firebase error:', error.value)
         }
