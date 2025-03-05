@@ -1,17 +1,26 @@
 <template>
   <div v-for="booklist in booklists" :key="booklist.id">
-    <div class="single">
-      <div class="thumbnail">
-        <img :src="booklist.coverUrl" />
+    <router-link :to="{ name: 'BooklistDetails', params: { id: booklist.id } }">
+      <div class="single">
+        <div class="thumbnail">
+          <img :src="booklist.coverUrl" />
+        </div>
+        <div class="info">
+          <h3>{{ booklist.title }}</h3>
+          <p>created by {{ booklist.userName }}</p>
+        </div>
+        <div class="booklist-number">
+          <p>
+            {{
+              booklist.books && Array.isArray(booklist.books)
+                ? booklist.books.length
+                : 0
+            }}
+            books
+          </p>
+        </div>
       </div>
-      <div class="info">
-        <h3>{{ booklist.title }}</h3>
-        <p>created by {{ booklist.userName }}</p>
-      </div>
-      <div class="booklist-number">
-        <p>{{ booklist.book.length }} books</p>
-      </div>
-    </div>
+    </router-link>
   </div>
 </template>
 
