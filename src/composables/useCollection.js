@@ -13,8 +13,10 @@ const useCollection = (collectionName) => {
 
     try {
       const colRef = collection(projectFirestore, collectionName)
-      await addDoc(colRef, doc)
+      console.log('firebase sent data ', doc)
+      const res = await addDoc(colRef, doc)
       isPending.value = false
+      return res
     } catch (err) {
       console.log(err.message)
       error.value = err.message
